@@ -76,14 +76,26 @@
     <section id="highlights" class="page">
       <div class="section-head"><div><div class="eyebrow">COMMUNITY MEDIA</div><h2>Highlights</h2></div><button class="blue-btn small" id="postBtn">+ POST HIGHLIGHT</button></div>
       <div class="highlight-grid" id="highlightGrid"></div>
-      <div id="postPanel" class="modal hidden">
-        <div class="modal-card"><button class="close" id="closePost">×</button><h3>Post a Highlight</h3><p class="muted">Demo mode stores your post in this browser.</p>
-          <input id="postName" placeholder="Your soul name">
-          <input id="postTitle" placeholder="Highlight title">
-          <input id="postMedia" placeholder="Image/video URL">
-          <button class="blue-btn" id="publishPost">PUBLISH</button>
-        </div>
-      </div>
+<div id="postPanel" class="modal hidden">
+  <div class="modal-card">
+    <button class="close" id="closePost">×</button>
+
+    <h3>Post a Highlight</h3>
+    <p class="muted">Share an image or video with the Underworld.</p>
+
+    <input id="postName" placeholder="Your soul name">
+
+    <input id="postTitle" placeholder="Highlight title">
+
+    <input
+      type="file"
+      id="postFile"
+      accept="image/*,video/*"
+    >
+
+    <button class="blue-btn" id="publishPost">PUBLISH</button>
+  </div>
+</div>
     </section>
 
     <section id="chat" class="page">
