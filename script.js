@@ -1,3 +1,10 @@
+const SUPABASE_URL = "https://zidnupzpmxighfcmhnco.supabase.co";
+const SUPABASE_KEY = "sb_publishable_2cxIQ0Evo9NNiWXGDAkg1w_gZjYiuT9";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 
 setTimeout(()=>{$('#loader').style.opacity='0';$('#loader').style.transition='.7s';setTimeout(()=>{$('#loader').remove();$('#gate').classList.remove('hidden')},700)},2800);
