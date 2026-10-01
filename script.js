@@ -9,27 +9,60 @@ const supabaseClient = window.supabase.createClient(
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
+
+/* =========================
+   LOADER
+========================= */
+
 setTimeout(() => {
-  $('#loader').style.opacity = '0';
-  $('#loader').style.transition = '.7s';
+  const loader = $('#loader');
+
+  if (!loader) return;
+
+  loader.style.opacity = '0';
+  loader.style.transition = '.7s';
 
   setTimeout(() => {
-    $('#loader').remove();
-    $('#gate').classList.remove('hidden');
+    loader.remove();
+
+    const gate = $('#gate');
+
+    if (gate) {
+      gate.classList.remove('hidden');
+    }
   }, 700);
+
 }, 2800);
 
+
+/* =========================
+   NAVIGATION
+========================= */
+
 function showTab(id) {
-  $$('.page').forEach(x => x.classList.remove('active-page'));
 
-  const p = $('#' + id);
-  if (p) p.classList.add('active-page');
-
-  $$('#nav button').forEach(x =>
-    x.classList.toggle('active', x.dataset.tab === id)
+  $$('.page').forEach(x =>
+    x.classList.remove('active-page')
   );
 
-  $('#nav').classList.remove('open');
+  const page = $('#' + id);
+
+  if (page) {
+    page.classList.add('active-page');
+  }
+
+  $$('#nav button').forEach(button => {
+    button.classList.toggle(
+      'active',
+      button.dataset.tab === id
+    );
+  });
+
+  const nav = $('#nav');
+
+  if (nav) {
+    nav.classList.remove('open');
+  }
 
   window.scrollTo({
     top: 0,
@@ -37,25 +70,70 @@ function showTab(id) {
   });
 }
 
-$('#enterBtn').onclick = () => {
-  $('#gate').style.opacity = '0';
-  $('#gate').style.transition = '.6s';
 
-  setTimeout(() => {
-    $('#gate').remove();
-    $('#app').classList.remove('hidden');
-  }, 600);
-};
+const enterBtn = $('#enterBtn');
 
-$$('[data-tab]').forEach(b =>
-  b.addEventListener('click', e => {
-    e.preventDefault();
-    showTab(b.dataset.tab);
-  })
-);
+if (enterBtn) {
 
-$('#menu').onclick = () =>
-  $('#nav').classList.toggle('open');
+  enterBtn.onclick = () => {
+
+    const gate = $('#gate');
+
+    if (!gate) return;
+
+    gate.style.opacity = '0';
+    gate.style.transition = '.6s';
+
+    setTimeout(() => {
+
+      gate.remove();
+
+      const app = $('#app');
+
+      if (app) {
+        app.classList.remove('hidden');
+      }
+
+    }, 600);
+
+  };
+
+}
+
+
+$$('[data-tab]').forEach(button => {
+
+  button.addEventListener(
+    'click',
+    event => {
+
+      event.preventDefault();
+
+      showTab(
+        button.dataset.tab
+      );
+
+    }
+  );
+
+});
+
+
+const menu = $('#menu');
+
+if (menu) {
+
+  menu.onclick = () => {
+
+    const nav = $('#nav');
+
+    if (nav) {
+      nav.classList.toggle('open');
+    }
+
+  };
+
+}
 
 
 /* =========================
@@ -77,45 +155,149 @@ const names = [
   'Raze'
 ];
 
-$('#memberGrid').innerHTML = names.map((n, i) => `
-  <div class="member">
-    <div class="avatar">${n[0]}</div>
-    <div>
-      <b>${n}</b><br>
-      <small>● online · soul ${100 + i}</small>
-    </div>
-  </div>
-`).join('');
+const memberGrid =
+  $('#memberGrid');
+
+if (memberGrid) {
+
+  memberGrid.innerHTML =
+    names.map((name, index) => `
+
+      <div class="member">
+
+        <div class="avatar">
+          ${name[0]}
+        </div>
+
+        <div>
+
+          <b>${escapeHtml(name)}</b>
+
+          <br>
+
+          <small>
+            ● online · soul ${100 + index}
+          </small>
+
+        </div>
+
+      </div>
+
+    `).join('');
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+  return String(value).replace(
+    /[&<>"']/g,
+    character => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[character])
+  );
+
+}
 
 
 /* =========================
    HIGHLIGHTS
 ========================= */
 
-const highlights = [
-  ['', 'VOID RUN', 'Vex', 'A clean clip from the Underworld.'],
-  ['◈', 'MIDNIGHT DROP', 'Nova', 'New community visual drop.'],
-  ['✦', 'SOUL MOMENT', 'Nox', 'A moment worth remembering.'],
-  ['◉', 'NIGHT SHIFT', 'Kairo', 'After-hours Underworld activity.'],
-  ['∆', 'BLUE HOUR', 'Ruin', 'Another one for the archive.'],
-  ['✹', 'THE DESCENT', 'Astra', 'Featured community highlight.']
+let highlights = [
+
+  [
+    '',
+    'VOID RUN',
+    'Vex',
+    'A clean clip from the Underworld.'
+  ],
+
+  [
+    '◈',
+    'MIDNIGHT DROP',
+    'Nova',
+    'New community visual drop.'
+  ],
+
+  [
+    '✦',
+    'SOUL MOMENT',
+    'Nox',
+    'A moment worth remembering.'
+  ],
+
+  [
+    '◉',
+    'NIGHT SHIFT',
+    'Kairo',
+    'After-hours Underworld activity.'
+  ],
+
+  [
+    '∆',
+    'BLUE HOUR',
+    'Ruin',
+    'Another one for the archive.'
+  ],
+
+  [
+    '✹',
+    'THE DESCENT',
+    'Astra',
+    'Featured community highlight.'
+  ]
+
 ];
 
+
 function renderHighlights() {
-  $('#highlightGrid').innerHTML = highlights.map(h => `
-    <article class="highlight">
-      <div class="highlight-media">${h[0]}</div>
 
-      <div class="highlight-body">
-        <small>${h[2]}</small>
-        <h3>${h[1]}</h3>
-        <p>${h[3]}</p>
-      </div>
-    </article>
-  `).join('');
+  const grid =
+    $('#highlightGrid');
+
+  if (!grid) return;
+
+  grid.innerHTML =
+    highlights.map(item => `
+
+      <article class="highlight">
+
+        <div class="highlight-media">
+
+          ${item[0]}
+
+        </div>
+
+        <div class="highlight-body">
+
+          <small>
+            ${escapeHtml(item[2])}
+          </small>
+
+          <h3>
+            ${escapeHtml(item[1])}
+          </h3>
+
+          <p>
+            ${escapeHtml(item[3])}
+          </p>
+
+        </div>
+
+      </article>
+
+    `).join('');
+
 }
-
-renderHighlights();
 
 
 /* =========================
@@ -125,182 +307,358 @@ renderHighlights();
 let lastSent = 0;
 let cooldownTimer = null;
 
-function escapeHtml(s) {
-  return s.replace(
-    /[&<>"']/g,
-    c => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    }[c])
-  );
-}
 
-function addChatMessage(name, message) {
-  const div = document.createElement('div');
+function addChatMessage(
+  username,
+  message
+) {
 
-  div.className = 'msg';
+  const messages =
+    $('#messages');
 
-  div.innerHTML = `
-    <div class="avatar">${escapeHtml(name.charAt(0).toUpperCase())}</div>
+  if (!messages) return;
+
+  const element =
+    document.createElement('div');
+
+  element.className =
+    'msg';
+
+  element.innerHTML = `
+
+    <div class="avatar">
+
+      ${escapeHtml(
+        String(username)
+          .charAt(0)
+          .toUpperCase()
+      )}
+
+    </div>
 
     <div class="bubble">
-      <b>${escapeHtml(name)}</b>
-      <p>${escapeHtml(message)}</p>
+
+      <b>
+        ${escapeHtml(username)}
+      </b>
+
+      <p>
+        ${escapeHtml(message)}
+      </p>
+
     </div>
+
   `;
 
-  $('#messages').appendChild(div);
-  $('#messages').scrollTop = $('#messages').scrollHeight;
+  messages.appendChild(
+    element
+  );
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
 }
 
 
-/* LOAD OLD MESSAGES */
+/* =========================
+   LOAD CHAT HISTORY
+========================= */
 
 async function loadChat() {
 
-  const { data, error } = await supabaseClient
+  const messages =
+    $('#messages');
+
+  if (!messages) return;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+
     .from('messages')
+
     .select('*')
-    .order('created_at', {
-      ascending: true
-    });
+
+    .order(
+      'created_at',
+      {
+        ascending: true
+      }
+    );
+
 
   if (error) {
-    console.error('Chat loading error:', error);
+
+    console.error(
+      'Chat loading error:',
+      error
+    );
+
     return;
   }
 
-  $('#messages').innerHTML = '';
 
-  data.forEach(msg => {
+  messages.innerHTML = '';
+
+
+  data.forEach(message => {
+
     addChatMessage(
-      msg.username,
-      msg.message
+      message.username,
+      message.message
     );
+
   });
+
 }
 
 
-/* SEND MESSAGE */
+/* =========================
+   SEND CHAT
+========================= */
 
 async function sendChat() {
 
-  const name =
-    $('#chatName').value.trim() ||
+  const nameInput =
+    $('#chatName');
+
+  const messageInput =
+    $('#chatInput');
+
+  if (!messageInput) return;
+
+
+  const username =
+    nameInput?.value.trim() ||
     'Anonymous Soul';
 
-  const msg =
-    $('#chatInput').value.trim();
 
-  const now = Date.now();
+  const message =
+    messageInput.value.trim();
 
-  if (!msg) return;
+
+  const now =
+    Date.now();
+
+
+  if (!message) return;
 
 
   /* 5 SECOND SLOW MODE */
 
-  if (now - lastSent < 5000) {
+  if (
+    now - lastSent < 5000
+  ) {
+
     startCooldown(
-      5000 - (now - lastSent)
+      5000 -
+      (now - lastSent)
     );
 
     return;
+
   }
 
 
-  /* SEND TO SUPABASE */
+  /* SAVE TO SUPABASE */
 
-  const { error } = await supabaseClient
+  const {
+    error
+  } = await supabaseClient
+
     .from('messages')
+
     .insert({
-      username: name,
-      message: msg
+
+      username: username,
+
+      message: message
+
     });
 
 
   if (error) {
 
     console.error(
-      'Message sending error:',
+      'Supabase chat error:',
       error
     );
 
-    alert('Failed to send message.');
+    alert(
+      'Failed to send message.'
+    );
 
     return;
+
   }
 
 
-  $('#chatInput').value = '';
+  /* SEND TO DISCORD */
 
-  lastSent = now;
+  const {
+    error: discordError
+  } =
+    await supabaseClient.functions.invoke(
+      'discord-webhook',
+      {
+        body: {
+          username: username,
+          message: message
+        }
+      }
+    );
 
-  startCooldown(5000);
+
+  if (discordError) {
+
+    console.error(
+      'Discord error:',
+      discordError
+    );
+
+    console.warn(
+      'Message was saved, but Discord delivery failed.'
+    );
+
+  }
+
+
+  messageInput.value = '';
+
+  lastSent =
+    now;
+
+  startCooldown(
+    5000
+  );
+
 }
 
 
-/* SEND BUTTON */
+/* =========================
+   SEND BUTTON
+========================= */
 
-$('#sendBtn').onclick = sendChat;
+const sendButton =
+  $('#sendBtn');
+
+if (sendButton) {
+
+  sendButton.onclick =
+    sendChat;
+
+}
 
 
-/* ENTER KEY */
+/* =========================
+   ENTER TO SEND
+========================= */
 
-$('#chatInput').addEventListener(
-  'keydown',
-  e => {
+const chatInput =
+  $('#chatInput');
 
-    if (e.key === 'Enter') {
-      sendChat();
+if (chatInput) {
+
+  chatInput.addEventListener(
+    'keydown',
+    event => {
+
+      if (
+        event.key === 'Enter'
+      ) {
+
+        event.preventDefault();
+
+        sendChat();
+
+      }
+
     }
+  );
 
-  }
-);
+}
 
 
-/* SLOW MODE */
+/* =========================
+   SLOW MODE
+========================= */
 
 function startCooldown(ms) {
 
-  clearInterval(cooldownTimer);
+  clearInterval(
+    cooldownTimer
+  );
 
-  const end = Date.now() + ms;
-
-  $('#sendBtn').disabled = true;
-
-  const tick = () => {
-
-    const left =
-      Math.max(
-        0,
-        end - Date.now()
-      );
-
-    $('#cooldown').textContent =
-      left
-        ? `SLOW MODE — ${Math.ceil(left / 1000)}s remaining`
-        : 'READY';
+  const end =
+    Date.now() + ms;
 
 
-    if (!left) {
+  if (sendButton) {
 
-      clearInterval(
-        cooldownTimer
-      );
+    sendButton.disabled =
+      true;
 
-      $('#sendBtn').disabled = false;
+  }
 
-    }
 
-  };
+  const update =
+    () => {
 
-  tick();
+      const remaining =
+        Math.max(
+          0,
+          end - Date.now()
+        );
+
+
+      const cooldown =
+        $('#cooldown');
+
+
+      if (cooldown) {
+
+        cooldown.textContent =
+          remaining
+
+            ? `SLOW MODE — ${Math.ceil(
+                remaining / 1000
+              )}s remaining`
+
+            : 'READY';
+
+      }
+
+
+      if (
+        remaining <= 0
+      ) {
+
+        clearInterval(
+          cooldownTimer
+        );
+
+        if (sendButton) {
+
+          sendButton.disabled =
+            false;
+
+        }
+
+      }
+
+    };
+
+
+  update();
+
 
   cooldownTimer =
-    setInterval(tick, 100);
+    setInterval(
+      update,
+      100
+    );
+
 }
 
 
@@ -309,25 +667,39 @@ function startCooldown(ms) {
 ========================= */
 
 supabaseClient
-  .channel('global-chat')
+
+  .channel(
+    'global-chat'
+  )
+
   .on(
+
     'postgres_changes',
+
     {
+
       event: 'INSERT',
+
       schema: 'public',
+
       table: 'messages'
+
     },
+
     payload => {
 
-      const msg = payload.new;
+      const message =
+        payload.new;
 
       addChatMessage(
-        msg.username,
-        msg.message
+        message.username,
+        message.message
       );
 
     }
+
   )
+
   .subscribe();
 
 
@@ -335,41 +707,321 @@ loadChat();
 
 
 /* =========================
-   HIGHLIGHT POST PANEL
+   POST PANEL
 ========================= */
 
-$('#postBtn').onclick = () =>
-  $('#postPanel').classList.remove('hidden');
+const postButton =
+  $('#postBtn');
 
-$('#closePost').onclick = () =>
-  $('#postPanel').classList.add('hidden');
+if (postButton) {
 
-$('#publishPost').onclick = () => {
+  postButton.onclick = () => {
 
-  const n =
-    $('#postName').value.trim() ||
-    'Unknown Soul';
+    const panel =
+      $('#postPanel');
 
-  const t =
-    $('#postTitle').value.trim() ||
-    'New Highlight';
+    if (panel) {
 
-  const url =
-    $('#postMedia').value.trim();
+      panel.classList.remove(
+        'hidden'
+      );
 
-  highlights.unshift([
-    '✦',
-    t,
-    n,
-    'Community submission' +
-    (url ? ' · media attached' : '')
-  ]);
+    }
 
-  renderHighlights();
+  };
 
-  $('#postPanel').classList.add('hidden');
+}
 
-  $('#postName').value = '';
-  $('#postTitle').value = '';
-  $('#postMedia').value = '';
-};
+
+const closePost =
+  $('#closePost');
+
+if (closePost) {
+
+  closePost.onclick = () => {
+
+    const panel =
+      $('#postPanel');
+
+    if (panel) {
+
+      panel.classList.add(
+        'hidden'
+      );
+
+    }
+
+  };
+
+}
+
+
+/* =========================
+   REAL HIGHLIGHT UPLOAD
+========================= */
+
+const publishButton =
+  $('#publishPost');
+
+if (publishButton) {
+
+  publishButton.onclick =
+    async () => {
+
+      const name =
+        $('#postName')
+          ?.value
+          .trim() ||
+        'Unknown Soul';
+
+
+      const title =
+        $('#postTitle')
+          ?.value
+          .trim() ||
+        'New Highlight';
+
+
+      const file =
+        $('#postFile')
+          ?.files[0];
+
+
+      if (!file) {
+
+        alert(
+          'Choose an image or video first.'
+        );
+
+        return;
+
+      }
+
+
+      const isImage =
+        file.type.startsWith(
+          'image/'
+        );
+
+
+      const isVideo =
+        file.type.startsWith(
+          'video/'
+        );
+
+
+      if (
+        !isImage &&
+        !isVideo
+      ) {
+
+        alert(
+          'Only images and videos are allowed.'
+        );
+
+        return;
+
+      }
+
+
+      /* 50 MB LIMIT */
+
+      const maxSize =
+        50 * 1024 * 1024;
+
+
+      if (
+        file.size > maxSize
+      ) {
+
+        alert(
+          'File must be 50MB or smaller.'
+        );
+
+        return;
+
+      }
+
+
+      const extension =
+        file.name
+          .split('.')
+          .pop();
+
+
+      const fileName =
+        Date.now() +
+        '-' +
+        Math.random()
+          .toString(36)
+          .slice(2) +
+        '.' +
+        extension;
+
+
+      const filePath =
+        'uploads/' +
+        fileName;
+
+
+      publishButton.disabled =
+        true;
+
+      publishButton.textContent =
+        'UPLOADING...';
+
+
+      /* UPLOAD */
+
+      const {
+        error: uploadError
+      } =
+        await supabaseClient
+
+          .storage
+
+          .from('highlights')
+
+          .upload(
+            filePath,
+            file
+          );
+
+
+      if (uploadError) {
+
+        console.error(
+          uploadError
+        );
+
+        alert(
+          'Upload failed.'
+        );
+
+        publishButton.disabled =
+          false;
+
+        publishButton.textContent =
+          'PUBLISH';
+
+        return;
+
+      }
+
+
+      /* PUBLIC URL */
+
+      const {
+        data: publicData
+      } =
+        supabaseClient
+
+          .storage
+
+          .from('highlights')
+
+          .getPublicUrl(
+            filePath
+          );
+
+
+      const mediaUrl =
+        publicData.publicUrl;
+
+
+      const mediaType =
+        isVideo
+          ? 'video'
+          : 'image';
+
+
+      /* DATABASE RECORD */
+
+      const {
+        error: databaseError
+      } =
+        await supabaseClient
+
+          .from('highlights')
+
+          .insert({
+
+            username: name,
+
+            title: title,
+
+            media_url: mediaUrl,
+
+            media_type: mediaType
+
+          });
+
+
+      if (databaseError) {
+
+        console.error(
+          databaseError
+        );
+
+        alert(
+          'Highlight database save failed.'
+        );
+
+        publishButton.disabled =
+          false;
+
+        publishButton.textContent =
+          'PUBLISH';
+
+        return;
+
+      }
+
+
+      alert(
+        '🔥 Highlight posted!'
+      );
+
+
+      const panel =
+        $('#postPanel');
+
+      if (panel) {
+
+        panel.classList.add(
+          'hidden'
+        );
+
+      }
+
+
+      $('#postName').value =
+        '';
+
+      $('#postTitle').value =
+        '';
+
+      $('#postMedia').value =
+        '';
+
+      $('#postFile').value =
+        '';
+
+
+      publishButton.disabled =
+        false;
+
+      publishButton.textContent =
+        'PUBLISH';
+
+    };
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+renderHighlights();
+https://zidnupzpmxighfcmhnco.supabase.co
