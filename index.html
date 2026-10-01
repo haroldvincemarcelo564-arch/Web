@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>1soul — Underworld</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loader">
+  <div class="loader-orbit"></div>
+  <div class="loader-core">1SOUL</div>
+  <div class="loading-text">LOADING SOULS<span class="dots"></span></div>
+  <div class="loading-bar"><i></i></div>
+</div>
+
+<div id="gate" class="hidden">
+  <div class="gate-noise"></div>
+  <div class="gate-content">
+    <div class="eyebrow">WELCOME TO THE</div>
+    <h1>UNDER<span>WORLD</span></h1>
+    <p>One place. One soul. No surface rules.</p>
+    <button id="enterBtn">ENTER UNDERWORLD <b>→</b></button>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <a class="brand" href="#" data-tab="home"><span>1</span>SOUL</a>
+    <nav id="nav">
+      <button class="active" data-tab="home">Home</button>
+      <button data-tab="members">Live Members</button>
+      <button data-tab="higher">Higher-Ups</button>
+      <button data-tab="highlights">Highlights</button>
+      <button data-tab="chat">Global Chat</button>
+      <button data-tab="hof">Hall of Fame</button>
+      <button data-tab="ads">Ads</button>
+      <button data-tab="about">About Us</button>
+    </nav>
+    <button class="menu" id="menu">☰</button>
+  </header>
+
+  <main>
+    <section id="home" class="page active-page">
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <div class="eyebrow">THE UNDERWORLD NETWORK</div>
+        <h2>ONE<br><span>SOUL.</span></h2>
+        <p>A digital underground for members, clips, conversations and legends.</p>
+        <button class="blue-btn" data-tab="highlights">EXPLORE HIGHLIGHTS <span>↗</span></button>
+      </div>
+      <div class="stats">
+        <div><small>SOULS ONLINE</small><strong id="homeOnline">128</strong></div>
+        <div><small>HIGHLIGHTS</small><strong id="homeHighlights">24</strong></div>
+        <div><small>LEGENDS</small><strong>12</strong></div>
+      </div>
+    </section>
+
+    <section id="members" class="page">
+      <div class="section-head"><div><div class="eyebrow">LIVE NOW</div><h2>Live Members</h2></div><div class="online"><i></i><b id="onlineCount">128</b> souls online</div></div>
+      <div class="member-grid" id="memberGrid"></div>
+    </section>
+
+    <section id="higher" class="page">
+      <div class="section-head"><div><div class="eyebrow">THE INNER CIRCLE</div><h2>Higher-Ups</h2></div></div>
+      <div class="podium">
+        <div class="rank second"><div class="rank-tag">2ND HIGHEST</div><div class="avatar">V</div><h3>VEX</h3><p>Inner Circle</p></div>
+        <div class="rank highest"><div class="crown">✦</div><div class="rank-tag">HIGHEST</div><div class="avatar">A</div><h3>ARCHON</h3><p>Underworld Founder</p></div>
+        <div class="rank third"><div class="rank-tag">3RD HIGHEST</div><div class="avatar">N</div><h3>NOVA</h3><p>Operations</p></div>
+      </div>
+    </section>
+
+    <section id="highlights" class="page">
+      <div class="section-head"><div><div class="eyebrow">COMMUNITY MEDIA</div><h2>Highlights</h2></div><button class="blue-btn small" id="postBtn">+ POST HIGHLIGHT</button></div>
+      <div class="highlight-grid" id="highlightGrid"></div>
+      <div id="postPanel" class="modal hidden">
+        <div class="modal-card"><button class="close" id="closePost">×</button><h3>Post a Highlight</h3><p class="muted">Demo mode stores your post in this browser.</p>
+          <input id="postName" placeholder="Your soul name">
+          <input id="postTitle" placeholder="Highlight title">
+          <input id="postMedia" placeholder="Image/video URL">
+          <button class="blue-btn" id="publishPost">PUBLISH</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="chat" class="page">
+      <div class="section-head"><div><div class="eyebrow">THE VOID</div><h2>Global Chat</h2></div><div class="slow">5S SLOW MODE</div></div>
+      <div class="chat-shell">
+        <div id="messages" class="messages"></div>
+        <div class="chat-form">
+          <input id="chatName" maxlength="24" placeholder="Soul name">
+          <input id="chatInput" maxlength="300" placeholder="Send a message…">
+          <button id="sendBtn" class="blue-btn">SEND</button>
+        </div>
+        <div id="cooldown" class="cooldown"></div>
+      </div>
+    </section>
+
+    <section id="hof" class="page">
+      <div class="section-head"><div><div class="eyebrow">REMEMBERED FOREVER</div><h2>Hall of Fame</h2></div></div>
+      <div class="hof-grid">
+        <article class="hof-card"><span>01</span><div class="big-avatar">A</div><h3>ARCHON</h3><p>Founded the Underworld.</p><small>INDUCTED 2026</small></article>
+        <article class="hof-card"><span>02</span><div class="big-avatar">V</div><h3>VEX</h3><p>Built the original community.</p><small>INDUCTED 2026</small></article>
+        <article class="hof-card"><span>03</span><div class="big-avatar">N</div><h3>NOVA</h3><p>Legendary community moments.</p><small>INDUCTED 2026</small></article>
+      </div>
+    </section>
+
+    <section id="ads" class="page">
+      <div class="section-head"><div><div class="eyebrow">SPONSORED SOULS</div><h2>Ads</h2></div></div>
+      <div class="ads-grid">
+        <article class="ad-card"><div class="ad-mark">VOID</div><h3>VOID CUSTOMS</h3><p>Custom graphics for the underground.</p><button>VIEW AD ↗</button></article>
+        <article class="ad-card"><div class="ad-mark">NØX</div><h3>NØX STUDIOS</h3><p>Edits, clips and visual drops.</p><button>VIEW AD ↗</button></article>
+        <article class="ad-card"><div class="ad-mark">SOUL</div><h3>1SOUL MERCH</h3><p>Limited Underworld drops.</p><button>VIEW AD ↗</button></article>
+      </div>
+    </section>
+
+    <section id="about" class="page">
+      <div class="about">
+        <div class="eyebrow">WHO WE ARE</div><h2>ABOUT <span>1SOUL</span></h2>
+        <p>1soul is an underground community built around people, creativity and shared moments. The Underworld is where members meet, post their best clips, talk globally and leave their mark.</p>
+        <div class="about-line"></div>
+        <div class="about-points"><div><b>01</b><h3>COMMUNITY</h3><p>Members first.</p></div><div><b>02</b><h3>CREATIVITY</h3><p>Share the moments.</p></div><div><b>03</b><h3>LEGACY</h3><p>Make your soul remembered.</p></div></div>
+      </div>
+    </section>
+  </main>
+  <footer><span>© 2026 1SOUL UNDERWORLD</span><span>ENTER THE VOID • STAY ORIGINAL</span></footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
